@@ -50,8 +50,6 @@ class PostListServiceImpl extends PostListService {
         posts = await Future.wait(children.map((post) async {
           var postData = post['data'];
 
-          Logger().i('Post data: $postData');
-
           final title = _unescape.convert(postData['title'])
               .replaceAll(RegExp(r'\s+'), ' ')
               .trim();

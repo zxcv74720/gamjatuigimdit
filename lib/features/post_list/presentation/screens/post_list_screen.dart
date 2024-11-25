@@ -59,7 +59,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     final state = ref.watch(postListNotifierProvider);
 
     return Scaffold(
-      backgroundColor: Colors.blueAccent[100],
+      backgroundColor: const Color.fromARGB(255, 95, 201, 248),
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
@@ -70,8 +70,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
+      body: state.isLoading ? const Center(child: CircularProgressIndicator(color: Colors.white)) : RefreshIndicator(
         onRefresh: _refresh,
+        color: const Color.fromARGB(255, 95, 201, 248),
         child: ListView.builder(
           controller: scrollController,
           itemCount: state.posts.length + (state.nextPageId != null ? 1 : 0),
@@ -80,7 +81,9 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
               return const Center(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
               );
             }

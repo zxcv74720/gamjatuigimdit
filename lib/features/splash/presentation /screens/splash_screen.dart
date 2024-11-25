@@ -45,20 +45,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(tokenStateProvider);
-
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: const Color.fromARGB(255, 95, 201, 248),
       body: Center(
-        child: authState.isLoading
-            ? const CircularProgressIndicator()
-            : const Text(
-          'Splash Screen',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 18.0,
-          ),
+        child: Image.asset(
+          'assets/images/logo.png',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(); // 이미지 로드 실패 시 빈 컨테이너
+          },
         ),
       ),
     );

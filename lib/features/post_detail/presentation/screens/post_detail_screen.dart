@@ -1,6 +1,7 @@
 // lib/features/post_detail/presentation/screens/post_detail_screen.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamjatuigimdit/features/post_detail/presentation/providers/post_detail_providers.dart';
 import 'package:gamjatuigimdit/shared/domain/models/comment/comment.dart';
@@ -34,9 +35,7 @@ class PostDetailScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
       ),
-      body: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
+      body: state.isLoading ? const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 95, 201, 248))) : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
