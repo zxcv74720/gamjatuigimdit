@@ -16,13 +16,15 @@ import 'package:gamjatuigimdit/features/post_list/presentation/screens/post_list
     as _i2;
 import 'package:gamjatuigimdit/features/splash/presentation%20/screens/splash_screen.dart'
     as _i3;
+import 'package:gamjatuigimdit/shared/domain/models/post/post_model.dart'
+    as _i6;
 
 /// generated route for
 /// [_i1.PostDetailScreen]
 class PostDetailRoute extends _i4.PageRouteInfo<PostDetailRouteArgs> {
   PostDetailRoute({
     _i5.Key? key,
-    required _i2.RedditPost post,
+    required _i6.Post post,
     List<_i4.PageRouteInfo>? children,
   }) : super(
           PostDetailRoute.name,
@@ -55,7 +57,7 @@ class PostDetailRouteArgs {
 
   final _i5.Key? key;
 
-  final _i2.RedditPost post;
+  final _i6.Post post;
 
   @override
   String toString() {

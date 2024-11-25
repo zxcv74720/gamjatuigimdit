@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:gamjatuigimdit/shared/domain/models/either.dart';
-import 'package:gamjatuigimdit/shared/domain/models/response.dart';
 
 class AppException implements Exception {
   final String message;
@@ -12,6 +11,7 @@ class AppException implements Exception {
     required this.statusCode,
     required this.identifier,
   });
+
   @override
   String toString() {
     return 'statusCode=$statusCode\nmessage=$message\nidentifier=$identifier';
@@ -32,8 +32,6 @@ class CacheFailureException extends Equatable implements AppException {
   List<Object?> get props => [message, statusCode, identifier];
 }
 
-//  extension
-
-extension HttpExceptionExtension on AppException {
-  Left<AppException, Response> get toLeft => Left<AppException, Response>(this);
+extension AppExceptionExtension<T> on AppException {
+  Left<AppException, T> toLeft() => Left<AppException, T>(this);
 }

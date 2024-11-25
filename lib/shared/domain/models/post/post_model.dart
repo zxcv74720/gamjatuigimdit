@@ -8,12 +8,13 @@ class Post with _$Post {
   const factory Post({
     @Default('') String id,
     @Default('') String title,
-    @Default('') String selfText,
+    @JsonKey(name: 'selftext') @Default('') String selfText,
     @Default(0) int score,
-    @Default(0) int numComments,
+    @JsonKey(name: 'num_comments') @Default(0) int numComments,
     @Default('') String author,
     @Default('') String permalink,
   }) = _Post;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  factory Post.fromJson(Map<String, dynamic> json) =>
+      _$PostFromJson(json);
 }

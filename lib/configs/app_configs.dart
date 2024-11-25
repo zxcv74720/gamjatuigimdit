@@ -1,3 +1,4 @@
 class AppConfigs {
-  static String baseUrl = 'https://localhost:3000';
+  static String redditUrl = 'https://oauth.reddit.com';
+  static String authUrl = 'https://www.reddit.com';
 }

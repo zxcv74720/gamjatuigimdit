@@ -2,8 +2,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:gamjatuigimdit/features/post_list/presentation/providers/post_list_state_provider.dart';
 import '../../../post_detail/presentation/screens/post_detail_screen.dart';
 
 @RoutePage()
@@ -18,16 +17,12 @@ class PostListScreen extends ConsumerStatefulWidget {
 
 class _PostListScreenState extends ConsumerState<PostListScreen> {
   final scrollController = ScrollController();
-  List<RedditPost> posts = [];
-  bool isLoading = false;
-  bool hasMore = true;
-  String? afterId;
 
   @override
   void initState() {
     super.initState();
-    fetchPosts();
     scrollController.addListener(_scrollListener);
+    _fetchInitialPosts();
   }
 
   @override
@@ -39,98 +34,56 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
 
   void _scrollListener() {
     if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent * 0.8 &&
-        !isLoading &&
-        hasMore) {
-      fetchPosts();
+        scrollController.position.maxScrollExtent * 0.8) {
+      _loadMorePosts();
     }
   }
 
-  Future<void> refresh() async {
-    setState(() {
-      posts.clear();
-      afterId = null;
-      hasMore = true;
-    });
-    await fetchPosts();
+  Future<void> _fetchInitialPosts() async {
+    ref.read(postListNotifierProvider.notifier).fetchPosts();
   }
 
-  Future<void> fetchPosts() async {
-    if (isLoading) return;
-
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      final Uri uri = Uri.parse(
-          'https://www.reddit.com/r/Flutter/hot.json' +
-              (afterId != null ? '?after=$afterId' : '') +
-              (afterId == null ? '?limit=20' : '&limit=20')
-      );
-
-      final response = await http.get(
-        uri,
-        headers: {
-          'User-Agent': 'MyFlutterApp/1.0',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<RedditPost> newPosts = [];
-
-        afterId = data['data']['after'];
-        hasMore = afterId != null;
-
-        for (var post in data['data']['children']) {
-          newPosts.add(RedditPost.fromJson(post['data']));
-        }
-
-        setState(() {
-          posts.addAll(newPosts);
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      print('Error fetching posts: $e');
-      setState(() {
-        isLoading = false;
-        hasMore = false;
-      });
+  Future<void> _loadMorePosts() async {
+    final state = ref.read(postListNotifierProvider);
+    if (!state.isLoading && state.nextPageId != null) {
+      ref.read(postListNotifierProvider.notifier).fetchPosts();
     }
+  }
+
+  Future<void> _refresh() async {
+    ref.read(postListNotifierProvider.notifier).fetchPosts(refresh: true);
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(postListNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Reddit 포스트'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: refresh,
+            onPressed: _refresh,
           ),
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: refresh,
+        onRefresh: _refresh,
         child: ListView.builder(
           controller: scrollController,
-          itemCount: posts.length + (hasMore ? 1 : 0),
+          itemCount: state.posts.length + (state.nextPageId != null ? 1 : 0),
           itemBuilder: (context, index) {
-            if (index == posts.length) {
-              return Center(
+            if (index == state.posts.length) {
+              return const Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: hasMore
-                      ? const CircularProgressIndicator()
-                      : const Text('모든 게시물을 불러왔습니다'),
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
                 ),
               );
             }
 
-            final post = posts[index];
+            final post = state.posts[index];
             return Card(
               margin: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -157,38 +110,6 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           },
         ),
       ),
-    );
-  }
-}
-
-class RedditPost {
-  final String id;
-  final String title;
-  final String selfText;
-  final int score;
-  final int numComments;
-  final String author;
-  final String permalink;
-
-  RedditPost({
-    required this.id,
-    required this.title,
-    required this.selfText,
-    required this.score,
-    required this.numComments,
-    required this.author,
-    required this.permalink,
-  });
-
-  factory RedditPost.fromJson(Map<String, dynamic> json) {
-    return RedditPost(
-      id: json['id'],
-      title: json['title'],
-      selfText: json['selftext'] ?? '',
-      score: json['score'],
-      numComments: json['num_comments'],
-      author: json['author'],
-      permalink: json['permalink'],
     );
   }
 }

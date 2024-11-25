@@ -1,68 +1,39 @@
 import 'package:equatable/equatable.dart';
 import 'package:gamjatuigimdit/shared/domain/models/post/post_model.dart';
 
-enum PostListConcreteState {
-  initial,
-  loading,
-  loaded,
-  failure,
-  fetchingMore,
-  fetchedAllPosts
-}
+enum PostStatus { initial, loading, loaded, error }
 
 class PostListState extends Equatable {
-  final List<Post> postList;
-  final int total;
-  final int page;
-  final bool hasData;
-  final PostListConcreteState state;
-  final String message;
+  final List<Post> posts;
+  final String? nextPageId;
   final bool isLoading;
-  const PostListState({
-    this.postList = const [],
-    this.isLoading = false,
-    this.hasData = false,
-    this.state = PostListConcreteState.initial,
-    this.message = '',
-    this.page = 0,
-    this.total = 0,
-  });
+  final PostStatus status;
+  final String? errorMessage;
 
-  const PostListState.initial({
-    this.postList = const [],
-    this.total = 0,
-    this.page = 0,
+  const PostListState({
+    this.posts = const [],
+    this.nextPageId,
     this.isLoading = false,
-    this.hasData = false,
-    this.state = PostListConcreteState.initial,
-    this.message = '',
+    this.status = PostStatus.initial,
+    this.errorMessage,
   });
 
   PostListState copyWith({
-    List<Post>? postList,
-    int? total,
-    int? page,
-    bool? hasData,
-    PostListConcreteState? state,
-    String? message,
+    List<Post>? posts,
+    String? nextPageId,
     bool? isLoading,
+    PostStatus? status,
+    String? errorMessage,
   }) {
     return PostListState(
+      posts: posts ?? this.posts,
+      nextPageId: nextPageId ?? this.nextPageId,
       isLoading: isLoading ?? this.isLoading,
-      postList: postList ?? this.postList,
-      total: total ?? this.total,
-      page: page ?? this.page,
-      hasData: hasData ?? this.hasData,
-      state: state ?? this.state,
-      message: message ?? this.message,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  String toString() {
-    return 'PostListState(isLoading:$isLoading, postList: ${postList.length},total:$total page: $page, hasData: $hasData, state: $state, message: $message)';
-  }
-
-  @override
-  List<Object?> get props => [postList, page, hasData, state, message];
+  List<Object?> get props => [posts, nextPageId, isLoading, status, errorMessage];
 }

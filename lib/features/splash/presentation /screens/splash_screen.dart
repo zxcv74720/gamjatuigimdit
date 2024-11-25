@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../routes/app_route.dart';
+import 'package:gamjatuigimdit/features/splash/domain/providers/token_providers.dart';
+import 'package:logger/logger.dart';
 import '../../../../routes/app_route.gr.dart';
 
 @RoutePage()
@@ -15,29 +16,43 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  final AppRouter appRouter = AppRouter();
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () async {
-      // final isUserLoggedIn = await ref.read(userLoginCheckProvider.future);
-      // final route = isUserLoggedIn
-      //     ? const DashboardRoute()
-      //     : LoginRoute() as PageRouteInfo;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initialize();
+    });
+  }
+
+  Future<void> _initialize() async {
+    await ref.read(tokenStateProvider.notifier).getAccessToken();
+
+    final authState = ref.read(tokenStateProvider);
+
+    if (authState.error != null) {
+      Logger().i('Auth Error: ${authState.error}');
+      return;
+    }
+
+    if (authState.token != null) {
       // ignore: use_build_context_synchronously
       AutoRouter.of(context).pushAndPopUntil(
         const PostListRoute(),
         predicate: (_) => false,
       );
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(tokenStateProvider);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: const Center(
-        child: Text(
+      body: Center(
+        child: authState.isLoading
+            ? const CircularProgressIndicator()
+            : const Text(
           'Splash Screen',
           style: TextStyle(
             color: Colors.white,

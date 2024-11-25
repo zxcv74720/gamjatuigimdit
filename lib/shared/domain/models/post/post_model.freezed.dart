@@ -22,8 +22,10 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 mixin _$Post {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'selftext')
   String get selfText => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
+  @JsonKey(name: 'num_comments')
   int get numComments => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
   String get permalink => throw _privateConstructorUsedError;
@@ -45,9 +47,9 @@ abstract class $PostCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
-      String selfText,
+      @JsonKey(name: 'selftext') String selfText,
       int score,
-      int numComments,
+      @JsonKey(name: 'num_comments') int numComments,
       String author,
       String permalink});
 }
@@ -118,9 +120,9 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
-      String selfText,
+      @JsonKey(name: 'selftext') String selfText,
       int score,
-      int numComments,
+      @JsonKey(name: 'num_comments') int numComments,
       String author,
       String permalink});
 }
@@ -184,9 +186,9 @@ class _$PostImpl implements _Post {
   const _$PostImpl(
       {this.id = '',
       this.title = '',
-      this.selfText = '',
+      @JsonKey(name: 'selftext') this.selfText = '',
       this.score = 0,
-      this.numComments = 0,
+      @JsonKey(name: 'num_comments') this.numComments = 0,
       this.author = '',
       this.permalink = ''});
 
@@ -200,13 +202,13 @@ class _$PostImpl implements _Post {
   @JsonKey()
   final String title;
   @override
-  @JsonKey()
+  @JsonKey(name: 'selftext')
   final String selfText;
   @override
   @JsonKey()
   final int score;
   @override
-  @JsonKey()
+  @JsonKey(name: 'num_comments')
   final int numComments;
   @override
   @JsonKey()
@@ -262,9 +264,9 @@ abstract class _Post implements Post {
   const factory _Post(
       {final String id,
       final String title,
-      final String selfText,
+      @JsonKey(name: 'selftext') final String selfText,
       final int score,
-      final int numComments,
+      @JsonKey(name: 'num_comments') final int numComments,
       final String author,
       final String permalink}) = _$PostImpl;
 
@@ -275,10 +277,12 @@ abstract class _Post implements Post {
   @override
   String get title;
   @override
+  @JsonKey(name: 'selftext')
   String get selfText;
   @override
   int get score;
   @override
+  @JsonKey(name: 'num_comments')
   int get numComments;
   @override
   String get author;

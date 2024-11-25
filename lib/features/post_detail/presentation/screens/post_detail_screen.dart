@@ -2,7 +2,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gamjatuigimdit/features/post_list/presentation/screens/post_list_screen.dart';
+import 'package:gamjatuigimdit/shared/domain/models/post/post_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:translator/translator.dart';
 import 'dart:convert';
@@ -11,7 +11,7 @@ import 'dart:convert';
 class PostDetailScreen extends ConsumerStatefulWidget {
   static const String name = 'PostDetailScreen';
 
-  final RedditPost post;
+  final Post post;
 
   const PostDetailScreen({
     super.key,
