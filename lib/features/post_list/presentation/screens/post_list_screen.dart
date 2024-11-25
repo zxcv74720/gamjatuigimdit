@@ -59,8 +59,10 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     final state = ref.watch(postListNotifierProvider);
 
     return Scaffold(
+      backgroundColor: Colors.blueAccent[100],
       appBar: AppBar(
-        title: const Text('Flutter Reddit 포스트'),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -85,26 +87,44 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
 
             final post = state.posts[index];
             return Card(
-              margin: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text(
-                  post.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
+                child: ListTile(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.title.split('\n')[0],
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        post.title.split('\n')[1],
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Text(
+                    '추천수: ${post.score} • 댓글: ${post.numComments}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostDetailScreen(post: post),
+                      ),
+                    );
+                  },
                 ),
-                subtitle: Text(
-                  '추천수: ${post.score} • 댓글: ${post.numComments}',
-                  style: const TextStyle(fontSize: 12),
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostDetailScreen(post: post),
-                    ),
-                  );
-                },
               ),
             );
           },

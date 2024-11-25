@@ -13,6 +13,8 @@ class Post with _$Post {
     @JsonKey(name: 'num_comments') @Default(0) int numComments,
     @Default('') String author,
     @Default('') String permalink,
+    String? url,
+    String? thumbnail,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) =>

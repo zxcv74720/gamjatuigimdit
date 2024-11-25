@@ -14,6 +14,8 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       numComments: (json['num_comments'] as num?)?.toInt() ?? 0,
       author: json['author'] as String? ?? '',
       permalink: json['permalink'] as String? ?? '',
+      url: json['url'] as String?,
+      thumbnail: json['thumbnail'] as String?,
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -25,4 +27,6 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'num_comments': instance.numComments,
       'author': instance.author,
       'permalink': instance.permalink,
+      'url': instance.url,
+      'thumbnail': instance.thumbnail,
     };

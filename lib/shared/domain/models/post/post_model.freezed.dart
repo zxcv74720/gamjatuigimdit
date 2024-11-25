@@ -29,6 +29,8 @@ mixin _$Post {
   int get numComments => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
   String get permalink => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
+  String? get thumbnail => throw _privateConstructorUsedError;
 
   /// Serializes this Post to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +53,9 @@ abstract class $PostCopyWith<$Res> {
       int score,
       @JsonKey(name: 'num_comments') int numComments,
       String author,
-      String permalink});
+      String permalink,
+      String? url,
+      String? thumbnail});
 }
 
 /// @nodoc
@@ -76,6 +80,8 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? numComments = null,
     Object? author = null,
     Object? permalink = null,
+    Object? url = freezed,
+    Object? thumbnail = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,6 +112,14 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.permalink
           : permalink // ignore: cast_nullable_to_non_nullable
               as String,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      thumbnail: freezed == thumbnail
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -124,7 +138,9 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       int score,
       @JsonKey(name: 'num_comments') int numComments,
       String author,
-      String permalink});
+      String permalink,
+      String? url,
+      String? thumbnail});
 }
 
 /// @nodoc
@@ -146,6 +162,8 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? numComments = null,
     Object? author = null,
     Object? permalink = null,
+    Object? url = freezed,
+    Object? thumbnail = freezed,
   }) {
     return _then(_$PostImpl(
       id: null == id
@@ -176,6 +194,14 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.permalink
           : permalink // ignore: cast_nullable_to_non_nullable
               as String,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      thumbnail: freezed == thumbnail
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -190,7 +216,9 @@ class _$PostImpl implements _Post {
       this.score = 0,
       @JsonKey(name: 'num_comments') this.numComments = 0,
       this.author = '',
-      this.permalink = ''});
+      this.permalink = '',
+      this.url,
+      this.thumbnail});
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -216,10 +244,14 @@ class _$PostImpl implements _Post {
   @override
   @JsonKey()
   final String permalink;
+  @override
+  final String? url;
+  @override
+  final String? thumbnail;
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, selfText: $selfText, score: $score, numComments: $numComments, author: $author, permalink: $permalink)';
+    return 'Post(id: $id, title: $title, selfText: $selfText, score: $score, numComments: $numComments, author: $author, permalink: $permalink, url: $url, thumbnail: $thumbnail)';
   }
 
   @override
@@ -236,13 +268,16 @@ class _$PostImpl implements _Post {
                 other.numComments == numComments) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.permalink, permalink) ||
-                other.permalink == permalink));
+                other.permalink == permalink) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.thumbnail, thumbnail) ||
+                other.thumbnail == thumbnail));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, selfText, score, numComments, author, permalink);
+  int get hashCode => Object.hash(runtimeType, id, title, selfText, score,
+      numComments, author, permalink, url, thumbnail);
 
   /// Create a copy of Post
   /// with the given fields replaced by the non-null parameter values.
@@ -268,7 +303,9 @@ abstract class _Post implements Post {
       final int score,
       @JsonKey(name: 'num_comments') final int numComments,
       final String author,
-      final String permalink}) = _$PostImpl;
+      final String permalink,
+      final String? url,
+      final String? thumbnail}) = _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -288,6 +325,10 @@ abstract class _Post implements Post {
   String get author;
   @override
   String get permalink;
+  @override
+  String? get url;
+  @override
+  String? get thumbnail;
 
   /// Create a copy of Post
   /// with the given fields replaced by the non-null parameter values.
