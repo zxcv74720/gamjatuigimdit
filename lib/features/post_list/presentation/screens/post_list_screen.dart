@@ -1,4 +1,3 @@
-// post_list_screen.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,10 +69,12 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
           ),
         ],
       ),
-      body: state.isLoading ? const Center(child: CircularProgressIndicator(color: Colors.white)) : RefreshIndicator(
+      body: RefreshIndicator(
         onRefresh: _refresh,
         color: const Color.fromARGB(255, 95, 201, 248),
-        child: ListView.builder(
+        child: state.posts.isEmpty && state.isLoading
+            ? const Center(child: CircularProgressIndicator(color: Colors.white))
+            : ListView.builder(
           controller: scrollController,
           itemCount: state.posts.length + (state.nextPageId != null ? 1 : 0),
           itemBuilder: (context, index) {
